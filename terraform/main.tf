@@ -1,10 +1,13 @@
 provider "google" {
+  version = "~> 2.9"
 }
 
 provider "google-beta" {
+  version = "~> 2.9"
 }
 
 provider "random" {
+  version = "~> 2.1"
 }
 
 # The LivingPackets organization remote state

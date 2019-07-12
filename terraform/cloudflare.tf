@@ -1,7 +1,9 @@
 # Configure the Cloudflare provider
 provider "cloudflare" {
-  email = var.cf_email
-  token = var.cf_token
+  version = "~> 1.16"
+  email   = var.cf_email
+  token   = var.cf_token
+
 }
 
 # The gitlab DNS.
