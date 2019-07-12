@@ -1,8 +1,8 @@
 # The gitlab's k8s cluster.
 resource "google_container_cluster" "gitlab" {
-  name     = "${var.gke_cluster_name}"
-  project  = "${google_project.meetup_bbq.project_id}"
-  location = "${var.gke_cluster_zone}"
+  name     = var.gke_cluster_name
+  project  = google_project.meetup_bbq.project_id
+  location = var.gke_cluster_zone
 
   # Setting an empty username and password explicitly disables basic auth
   master_auth {
@@ -29,13 +29,13 @@ resource "google_container_cluster" "gitlab" {
     master_ipv4_cidr_block = "192.168.16.0/28"
   }
 
-  network    = "${google_compute_network.meetup_bbq.self_link}"
-  subnetwork = "${google_compute_subnetwork.meetup_bbq_private.self_link}"
+  network    = google_compute_network.meetup_bbq.self_link
+  subnetwork = google_compute_subnetwork.meetup_bbq_private.self_link
 
   ip_allocation_policy {
     use_ip_aliases                = true
-    cluster_secondary_range_name  = "${google_compute_subnetwork.meetup_bbq_private.secondary_ip_range.0.range_name}"
-    services_secondary_range_name = "${google_compute_subnetwork.meetup_bbq_private.secondary_ip_range.1.range_name}"
+    cluster_secondary_range_name  = google_compute_subnetwork.meetup_bbq_private.secondary_ip_range[0].range_name
+    services_secondary_range_name = google_compute_subnetwork.meetup_bbq_private.secondary_ip_range[1].range_name
   }
 
   addons_config {
@@ -61,14 +61,14 @@ resource "google_container_cluster" "gitlab" {
 # The gitlab's k8s main cluster nodepool.
 resource "google_container_node_pool" "main" {
   name       = "main"
-  project    = "${google_project.meetup_bbq.project_id}"
-  location   = "${google_container_cluster.gitlab.location}"
-  cluster    = "${google_container_cluster.gitlab.name}"
+  project    = google_project.meetup_bbq.project_id
+  location   = google_container_cluster.gitlab.location
+  cluster    = google_container_cluster.gitlab.name
   node_count = 1
 
   node_config {
     # 4 vCPU / 15GB ram
-    machine_type = "${var.gke_instance_type}"
+    machine_type = var.gke_instance_type
     preemptible  = false
 
     oauth_scopes = [
@@ -93,3 +93,4 @@ resource "google_container_node_pool" "main" {
     auto_upgrade = true
   }
 }
+

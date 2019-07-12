@@ -1,6 +1,6 @@
 # gcloud services activation list
 resource "google_project_services" "meetup_bbq" {
-  project = "${google_project.meetup_bbq.project_id}"
+  project = google_project.meetup_bbq.project_id
 
   services = [
     "pubsub.googleapis.com",
@@ -16,3 +16,4 @@ resource "google_project_services" "meetup_bbq" {
     "storage-api.googleapis.com",
   ]
 }
+
