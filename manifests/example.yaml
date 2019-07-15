@@ -1,0 +1,35 @@
+# Just a name for your deployment.
+name: example
+# The GCP project ID / name.
+gcp_project: meetup-bbq
+# A region used to use for regional resources (e.g. buckets).
+region: europe-west3
+infrastructure:
+  gke_cluster:
+    # The GKE cluster name.
+    name: gitlab
+    # The GKE cluster zone.
+    zone: europe-west3-c
+    # The GKE cluster instance type (https://cloud.google.com/compute/docs/machine-types).
+    instance_type: n1-standard-4
+    # A list of cluster admins
+    admins:
+      - myemail@mydomain.com
+    # An IP address authorized to cluster master (to get yours do a curl ifconfig.me command).
+    master_auth_ip: 46.226.135.114
+  cloudsql:
+    # The CloudSQL instance type (https://cloud.google.com/sql/docs/postgres/instance-settings).
+    instance_type: db-g1-small
+    # The CloudSQL version.
+    version: POSTGRES_9_6
+gitlab:
+  # The domain to use for dns.
+  domain: mydomain.com
+  # A suffix for the host for example (in this case the address will be gitlab-bbq.mydomain.com).
+  host_suffix: bbq
+  # The gitlab chart version (https://docs.gitlab.com/charts/installation/version_mappings.html).
+  chart_version: 2.0.2
+  # A prefix for bucket names (these must be strictly unique).
+  buckets_prefix: meetup-bbq
+  # An email for cert-manager issuer.
+  issuer_email: infra@mydomain.com
